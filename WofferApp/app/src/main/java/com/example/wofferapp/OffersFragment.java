@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -61,8 +62,10 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
 
         mMap = googleMap;
         mMap.setOnInfoWindowClickListener(this);
+        mMap.setInfoWindowAdapter(setMarkerWindow());
+
         LatLng trent = new LatLng(52.9117779,-1.1854268);
-        LatLng nottingham = new LatLng(52.9493, 1.1471);
+        LatLng nottingham = new LatLng(52.9493, -1.1471);
         //mMap.addMarker(new MarkerOptions().position(trent).title("Marker in Nottingham"));
 
         db.collection("offers")
@@ -102,6 +105,25 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
     public void onInfoWindowClick(Marker marker) {
         Toast.makeText(getContext(), "Info window clicked",
                 Toast.LENGTH_SHORT).show();
+    }
+
+    private GoogleMap.InfoWindowAdapter setMarkerWindow() {
+        return new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                View myContentView = getLayoutInflater().inflate(
+                        R.layout.info_marker, null);
+                TextView offerTitle = ((TextView) myContentView
+                        .findViewById(R.id.title));
+                offerTitle.setText(marker.getTitle());
+                return myContentView;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                return null;
+            }
+        };
     }
 
 }
