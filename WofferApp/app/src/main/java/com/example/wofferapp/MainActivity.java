@@ -34,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        data = new UserDetails();
+        //data = new UserDetails();
 
-        db.collection("users").document(getFirebaseUser().getUid()).set(data);
+        //db.collection("users").document(getFirebaseUser().getUid()).set(data);
 
         // Initialize the bottom navigation bar
         BottomNavigationView navView = findViewById(R.id.nav_view);
