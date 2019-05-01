@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "890183979840",
+    "firebase_url": "https://wofferapp-1556629325168.firebaseio.com",
+    "project_id": "wofferapp-1556629325168",
+    "storage_bucket": "wofferapp-1556629325168.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:890183979840:android:8ed595ba03de791a",
+        "android_client_info": {
+          "package_name": "com.example.wofferapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "890183979840-e077smdb6reode534kl04l5qp65o49km.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wofferapp",
+            "certificate_hash": "4822058a1a577cc746f2e14348c6eecc6911c87d"
+          }
+        },
+        {
+          "client_id": "890183979840-thc27h1dcj66tr6p6likl33ned81folp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyukgV4qmUULxebIZkKbXIUnY2G-GhVhE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "890183979840-thc27h1dcj66tr6p6likl33ned81folp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
