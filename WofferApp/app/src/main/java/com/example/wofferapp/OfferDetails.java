@@ -3,6 +3,7 @@ package com.example.wofferapp;
 import com.google.firebase.firestore.GeoPoint;
 
 public class OfferDetails {
+
     private int id;
     private String title;
     private GeoPoint position;
@@ -28,9 +29,10 @@ public class OfferDetails {
         return position;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getImg() { return img; }
 
+    public String getDescription() { return description; }
+
+    public String getReward() { return reward; }
 
 }
