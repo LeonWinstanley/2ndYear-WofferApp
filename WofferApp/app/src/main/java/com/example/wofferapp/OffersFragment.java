@@ -7,12 +7,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,7 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class OffersFragment extends Fragment implements OnMapReadyCallback {
+public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowClickListener, OnMapReadyCallback {
 
     // Create a map object
     GoogleMap mMap;
@@ -58,8 +60,10 @@ public class OffersFragment extends Fragment implements OnMapReadyCallback {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         mMap = googleMap;
+        mMap.setOnInfoWindowClickListener(this);
         LatLng trent = new LatLng(52.9117779,-1.1854268);
-        mMap.addMarker(new MarkerOptions().position(trent).title("Marker in Nottingham"));
+        LatLng nottingham = new LatLng(52.9493, 1.1471);
+        //mMap.addMarker(new MarkerOptions().position(trent).title("Marker in Nottingham"));
 
         db.collection("offers")
                 //.whereEqualTo("capital", true)
@@ -73,21 +77,15 @@ public class OffersFragment extends Fragment implements OnMapReadyCallback {
                                 double latitude = offer.getPosition().getLatitude();
                                 double longitude = offer.getPosition().getLongitude();
                                 LatLng location = new LatLng(latitude, longitude);
-                                mMap.addMarker(new MarkerOptions().position(location).title(offer.getTitle()));
+                                mMap.addMarker(new MarkerOptions().position(location)
+                                        .title(offer.getTitle())
+                                        .snippet(offer.getDescription()));
                             }
                         } else {
                             //Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
-
-        DocumentReference docRef = db.collection("offers").document("10%off");
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-
-            }
-        });
 
         try {
             mMap.setMyLocationEnabled(true);
@@ -98,6 +96,12 @@ public class OffersFragment extends Fragment implements OnMapReadyCallback {
         // Finally, move the camera to the marker and set the zoom to 15
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(trent, 15.0f));
 
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Toast.makeText(getContext(), "Info window clicked",
+                Toast.LENGTH_SHORT).show();
     }
 
 }
