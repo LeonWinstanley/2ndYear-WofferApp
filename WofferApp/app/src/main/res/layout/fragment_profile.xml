@@ -4,10 +4,17 @@
     android:background="@android:color/holo_orange_light">
 
     <TextView
+        android:id="@+id/profileText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Profile Fragment"
         android:textSize="30sp"
         android:layout_centerInParent="true"/>
+
+    <ImageView
+        android:id="@+id/profileImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp" />
 
 </RelativeLayout>
