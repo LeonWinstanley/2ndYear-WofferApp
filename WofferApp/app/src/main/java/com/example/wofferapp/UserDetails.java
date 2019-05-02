@@ -1,20 +1,22 @@
 package com.example.wofferapp;
 
-import com.google.firebase.firestore.auth.User;
-
 import java.lang.reflect.Array;
+import java.util.List;
 
 public class UserDetails {
 
     private String id;
     private int currentOfferid;
-    private int[] completedOffers;
+    private List<Integer> completedOffers;
     private int colorTheme;
 
     public UserDetails(){}
 
-    public UserDetails(String id, int currentOfferid, int[] completedOffers, int colorTheme){
-
+    public UserDetails(String uid, int currentOff, List<Integer> completedOff, int color){
+        id = uid;
+        currentOfferid = currentOff;
+        completedOffers = completedOff;
+        colorTheme = color;
     }
 
     public String getId() {
@@ -25,7 +27,7 @@ public class UserDetails {
         return currentOfferid;
     }
 
-    public int[] getCompletedOffers() {
+    public List<Integer> getCompletedOffers() {
         return completedOffers;
     }
 

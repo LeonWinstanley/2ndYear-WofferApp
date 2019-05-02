@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.MenuItem;
 import android.Manifest;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -22,9 +23,13 @@ import com.google.firebase.firestore.auth.User;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,10 +45,15 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String currUserID = getFirebaseUser().getUid();
+
         DocumentReference docIdRef = db.collection("users").document(currUserID);
 
-       int[] compOff = {};
-        UserDetails currUser = new UserDetails(currUserID, 0, compOff, 1);
+        List<Integer> compOff = new ArrayList<Integer>();
+
+        UserDetails currUser = new UserDetails(currUserID, 0 , compOff, 1);
+
+        Toast.makeText(this, currUser.getId(),
+                Toast.LENGTH_SHORT).show();
         docIdRef.set(currUser);
 
         // Initialize the bottom navigation bar
