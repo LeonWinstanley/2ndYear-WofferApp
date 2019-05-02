@@ -22,8 +22,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -43,6 +46,16 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
     public OffersFragment() {
         // Empty Constructor
     }
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public UserDetails currentUser = new UserDetails();
+
+    public void setCurrentUser(UserDetails us){
+        currentUser = us;
+    }
+
+    public FirebaseUser getFirebaseUser() {
+        return FirebaseAuth.getInstance().getCurrentUser();
+    };
 
     // When the view is first started, inflate it to the container size
     @Nullable
@@ -74,8 +87,6 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
     // enabled. Possibly ask for them again? Ignore for now
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         mMap = googleMap;
         mMap.setOnInfoWindowClickListener(this);
@@ -124,10 +135,25 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        Toast.makeText(getContext(), "Info window clicked",
-                Toast.LENGTH_SHORT).show();
         OfferDetails markerTag = (OfferDetails) marker.getTag();
+        currentUser.setCurrentOfferid(markerTag.getID());
+        ((MainActivity)getActivity()).currUser = currentUser;
 
+        DocumentReference usersRef = db.collection("users").document(getFirebaseUser().getUid());
+        usersRef
+                .update("currentOfferid", markerTag.getID())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getContext(), "Offer Added!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(), "Error Adding Offer", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private GoogleMap.InfoWindowAdapter setMarkerWindow() {

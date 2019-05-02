@@ -35,4 +35,16 @@ public class UserDetails {
         return colorTheme;
     }
 
+    public void setCurrentOfferid(int currentOfferid) {
+        this.currentOfferid = currentOfferid;
+    }
+
+    public void setColorTheme(int colorTheme) {
+        this.colorTheme = colorTheme;
+    }
+
+    public void setCompletedOffers(List<Integer> completedOffers) {
+        this.completedOffers = completedOffers;
+    }
+
 }
