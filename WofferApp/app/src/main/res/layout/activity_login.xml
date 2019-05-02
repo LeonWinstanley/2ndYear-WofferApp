@@ -27,7 +27,7 @@
         android:layout_marginEnd="33dp"
         android:layout_marginRight="33dp"
         android:layout_marginBottom="147dp"
-        app:srcCompat="@drawable/WofferLogoPNG" />
+        app:srcCompat="@drawable/woffer_logo_png" />
 
 
 </RelativeLayout>
