@@ -10,6 +10,13 @@
         android:textSize="30sp"
         android:layout_centerInParent="true"/>
 
+    <TextView
+        android:id="@+id/profileCurrentOffer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:layout_below="@+id/profileText"/>
+
     <ImageView
         android:id="@+id/profileImage"
         android:layout_width="100dp"

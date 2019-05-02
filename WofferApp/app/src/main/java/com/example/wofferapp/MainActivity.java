@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     public int colorThemeApp = 1;
     String currUserID = getFirebaseUser().getUid();
     List<Integer> compOff = new ArrayList<Integer>();
-    UserDetails currUser = new UserDetails(currUserID, 0 , compOff, colorThemeApp);
+    public UserDetails currUser = new UserDetails(currUserID, 0 , compOff, colorThemeApp);
 
     public void setCurrentUser(UserDetails us){
         currUser = us;
@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.navigation_offers:
                             selectedFragment = new OffersFragment();
+                            ((OffersFragment) selectedFragment).setCurrentUser(currUser);
                             break;
                         case R.id.navigation_settings:
                             selectedFragment = new SettingsFragment();

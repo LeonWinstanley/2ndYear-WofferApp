@@ -14,12 +14,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.auth.User;
 
 import java.io.BufferedInputStream;
@@ -40,6 +43,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT > 8)
         {
@@ -52,14 +57,32 @@ public class ProfileFragment extends Fragment {
 
         TextView offerTitle = ((TextView) v
         .findViewById(R.id.profileText));
-
         offerTitle.setText(currentUser.getId());
 
-        offerTitle.setText(getFirebaseUser().getDisplayName());
+        TextView currentOffer = ((TextView) v
+                .findViewById(R.id.profileText));
 
+        db.collection("offers")
+                .whereEqualTo("id", currentUser.getCurrentOfferid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                OfferDetails offer = document.toObject(OfferDetails.class);
+                                currentOffer.setText(offer.getTitle());
+                            }
+                        } else {
+                            //Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+        offerTitle.setText(getFirebaseUser().getDisplayName());
         ImageView offerImg = ((ImageView) v
                 .findViewById(R.id.profileImage));
-
         offerImg.setImageBitmap(getImageBitmap(getFirebaseUser().getPhotoUrl().toString()));
 
         return v;

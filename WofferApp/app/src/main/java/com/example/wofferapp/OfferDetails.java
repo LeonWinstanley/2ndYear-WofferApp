@@ -2,7 +2,9 @@ package com.example.wofferapp;
 
 import com.google.firebase.firestore.GeoPoint;
 
-public class OfferDetails {
+import java.io.Serializable;
+
+public class OfferDetails implements Serializable {
 
     private int id;
     private String title;
