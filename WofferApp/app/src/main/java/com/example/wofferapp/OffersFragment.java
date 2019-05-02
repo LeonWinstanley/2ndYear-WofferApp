@@ -126,6 +126,8 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
     public void onInfoWindowClick(Marker marker) {
         Toast.makeText(getContext(), "Info window clicked",
                 Toast.LENGTH_SHORT).show();
+        OfferDetails markerTag = (OfferDetails) marker.getTag();
+
     }
 
     private GoogleMap.InfoWindowAdapter setMarkerWindow() {

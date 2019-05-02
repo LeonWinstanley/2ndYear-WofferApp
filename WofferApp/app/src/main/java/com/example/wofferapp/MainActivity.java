@@ -34,9 +34,18 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
     public FirebaseUser getFirebaseUser() {
         return FirebaseAuth.getInstance().getCurrentUser();
     };
+    public int colorThemeApp = 1;
+    String currUserID = getFirebaseUser().getUid();
+    List<Integer> compOff = new ArrayList<Integer>();
+    UserDetails currUser = new UserDetails(currUserID, 0 , compOff, colorThemeApp);
+
+    public void setCurrentUser(UserDetails us){
+        currUser = us;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,21 +53,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String currUserID = getFirebaseUser().getUid();
 
         DocumentReference docIdRef = db.collection("users").document(currUserID);
 
-        List<Integer> compOff = new ArrayList<Integer>();
-
-        UserDetails currUser = new UserDetails(currUserID, 0 , compOff, 1);
-
-        Toast.makeText(this, currUser.getId(),
-                Toast.LENGTH_SHORT).show();
-        docIdRef.set(currUser);
+        docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        currUser = document.toObject(UserDetails.class);
+                    } else {
+                        docIdRef.set(currUser);
+                    }
+                } else {
+                    Log.d(TAG, "Failed with: ", task.getException());
+                }
+            }
+        });
 
         // Initialize the bottom navigation bar
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navView.setSelectedItemId(R.id.navigation_offers);
 
         // Using RxPermissions library create a new object
         RxPermissions rxPermissions = new RxPermissions(this);
@@ -77,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Here we set up the application by initializing the fragment to be a profile fragment
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                new ProfileFragment()).commit();
+                new OffersFragment()).commit();
 
     }
 
@@ -91,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     switch (menuItem.getItemId()){
                         case R.id.navigation_profile:
                             selectedFragment = new ProfileFragment();
+                            ((ProfileFragment) selectedFragment).setCurrentUser(currUser);
                             break;
                         case R.id.navigation_offers:
                             selectedFragment = new OffersFragment();
