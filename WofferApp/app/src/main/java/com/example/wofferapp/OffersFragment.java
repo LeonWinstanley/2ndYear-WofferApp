@@ -137,15 +137,15 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
 
                 OfferDetails markerTag = (OfferDetails) marker.getTag();
 
-                TextView offerTitle = ((TextView) myContentView
-                        .findViewById(R.id.title));
+                //TextView offerTitle = ((TextView) myContentView
+                        //.findViewById(R.id.title));
 
-                offerTitle.setText(markerTag.getTitle());
+                //offerTitle.setText(markerTag.getTitle());
 
-                TextView offerDesc = ((TextView) myContentView
-                        .findViewById(R.id.description));
+                //TextView offerDesc = ((TextView) myContentView
+                       //.findViewById(R.id.description));
 
-                offerDesc.setText(markerTag.getDescription());
+                //offerDesc.setText(markerTag.getDescription());
 
                 ImageView offerImg = ((ImageView) myContentView
                         .findViewById(R.id.image));

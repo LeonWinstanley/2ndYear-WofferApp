@@ -9,14 +9,20 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.Manifest;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,10 +39,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String currUserID = getFirebaseUser().getUid();
+        DocumentReference docIdRef = db.collection("users").document(currUserID);
 
-        //data = new UserDetails();
-
-        //db.collection("users").document(getFirebaseUser().getUid()).set(data);
+       int[] compOff = {};
+        UserDetails currUser = new UserDetails(currUserID, 0, compOff, 1);
+        docIdRef.set(currUser);
 
         // Initialize the bottom navigation bar
         BottomNavigationView navView = findViewById(R.id.nav_view);
