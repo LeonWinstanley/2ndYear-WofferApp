@@ -6,6 +6,23 @@
     android:layout_height="match_parent"
     tools:context="com.example.wofferapp.LoginActivity">
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20pt"
+        android:layout_centerHorizontal="true"
+        android:text="Login"
+        android:textSize="34sp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="305dp"
+        android:layout_height="305dp"
+        android:layout_marginTop="50pt"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/woffer_logo_png" />
+
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
         android:layout_width="match_parent"
@@ -16,18 +33,6 @@
         android:layout_marginBottom="91dp">
 
     </com.google.android.gms.common.SignInButton>
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="305dp"
-        android:layout_height="302dp"
-        android:layout_above="@+id/sign_in_button"
-        android:layout_alignEnd="@+id/sign_in_button"
-        android:layout_alignRight="@+id/sign_in_button"
-        android:layout_marginEnd="33dp"
-        android:layout_marginRight="33dp"
-        android:layout_marginBottom="147dp"
-        app:srcCompat="@drawable/woffer_logo_png" />
 
 
 </RelativeLayout>

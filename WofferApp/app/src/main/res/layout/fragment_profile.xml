@@ -3,42 +3,40 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/profileText"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"/>
+        android:layout_marginTop="20pt"
+        android:layout_centerHorizontal="true"
+        android:text="@string/title_profile"
+        android:textSize="34sp" />
 
-    <TextView
-        android:id="@+id/profileCurrentOffer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_below="@+id/profileText"/>
 
     <ImageView
         android:id="@+id/profileImage"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_alignEnd="@+id/profileCurrentOffer"
-        android:layout_alignRight="@+id/profileCurrentOffer"
-        android:layout_alignBottom="@+id/profileCurrentOffer"
-        android:layout_marginEnd="-254dp"
-        android:layout_marginRight="-254dp"
-        android:layout_marginBottom="179dp"
-        android:contentDescription="@string/app_name" />
+        android:layout_marginTop="90pt"
+        android:layout_centerHorizontal="true">
+
+    </ImageView>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/profileText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/profileCurrentOffer"
-        android:layout_alignRight="@+id/profileCurrentOffer"
-        android:layout_alignBottom="@+id/profileCurrentOffer"
-        android:layout_marginEnd="-239dp"
-        android:layout_marginRight="-239dp"
-        android:layout_marginBottom="327dp"
-        android:text="@string/title_profile"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:layout_marginTop="180pt"
+        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/profileCurrentOffer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="220pt"
+        android:layout_centerHorizontal="true"
+        android:textSize="34sp" />
 
 </RelativeLayout>
