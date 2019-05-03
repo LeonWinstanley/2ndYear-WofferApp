@@ -44,7 +44,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+        setCurrentUser(((MainActivity) getActivity()).currUser);
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT > 8)
         {

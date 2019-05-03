@@ -97,10 +97,9 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
-        // Here we set up the application by initializing the fragment to be a profile fragment
+        //Here we set up the application by initializing the fragment to be a profile fragment
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new ProfileFragment()).commit();
-
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener =
@@ -111,9 +110,8 @@ public class MainActivity extends AppCompatActivity {
                     // Switch statement to replace the currently being viewed fragment with a new
                     // fragment dependant on which icon is pressed
                     switch (menuItem.getItemId()){
-                        case R.id.navigation_home:
+                        case R.id.navigation_profile:
                             selectedFragment = new ProfileFragment();
-                            ((ProfileFragment) selectedFragment).setCurrentUser(currUser);
                             break;
                         case R.id.navigation_offers:
                             selectedFragment = new OffersFragment();
