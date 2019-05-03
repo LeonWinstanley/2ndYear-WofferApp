@@ -187,31 +187,7 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
                                                 location.getLatitude() > currentOffer.getPosition().getLatitude()-0.0001f &&
                                                 location.getLongitude() < currentOffer.getPosition().getLongitude()+0.0001f &&
                                                 location.getLatitude() > currentOffer.getPosition().getLatitude()-0.0001f){
-                                            DocumentReference usersRef = db.collection("users")
-                                                    .document(getFirebaseUser().getUid());
-                                            usersRef
-                                                    .update("completedOffers",FieldValue.arrayUnion(currentOffer.getID()))
-                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                        @Override
-                                                        public void onSuccess(Void aVoid) {
-                                                            Toast.makeText(getContext(), "Offer Completed!", Toast.LENGTH_SHORT)
-                                                                    .show();
-                                                            DocumentReference usersRef = db.collection("users")
-                                                                    .document(getFirebaseUser().getUid());
-                                                            usersRef
-                                                                    .update("currentOfferid",0);
-                                                            ((MainActivity) getActivity()).syncCurrentUser();
-                                                            gotoAR();
-                                                            //currentUser = ((MainActivity) getActivity()).currUser;
-                                                        }
-                                                    })
-                                                    .addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception e) {
-                                                            Toast.makeText(getContext(), "Error Adding Offer", Toast.LENGTH_SHORT)
-                                                                    .show();
-                                                        }
-                                                    });
+                                            gotoAR();
                                         }
                                     }
                                 } else {

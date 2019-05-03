@@ -18,15 +18,21 @@ package com.example.wofferapp;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
@@ -34,6 +40,15 @@ import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * This is an example activity that uses the Sceneform UX package to make common AR tasks easier.
@@ -44,6 +59,30 @@ public class SceneformActivity extends AppCompatActivity {
 
   private ArFragment arFragment;
   private ModelRenderable andyRenderable;
+
+  FirebaseFirestore db = FirebaseFirestore.getInstance();
+  UserDetails currUser;
+
+  public FirebaseUser getFirebaseUser() {
+        return FirebaseAuth.getInstance().getCurrentUser();
+    };
+
+  public void syncCurrentUser() {
+        DocumentReference docIdRef = db.collection("users").document(getFirebaseUser().getUid());
+        docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        currUser = document.toObject(UserDetails.class);
+                    }
+                } else {
+                    Log.d(TAG, "Failed with: ", task.getException());
+                }
+            }
+        });
+    }
 
   @Override
   @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
@@ -90,6 +129,41 @@ public class SceneformActivity extends AppCompatActivity {
           andy.setParent(anchorNode);
           andy.setRenderable(andyRenderable);
           andy.select();
+
+          Toast.makeText(this, "Offer Completed! Enjoy your Reward!", Toast.LENGTH_LONG).show();
+
+            DocumentReference usersRef = db.collection("users")
+                    .document(getFirebaseUser().getUid());
+            usersRef
+                    .update("completedOffers", FieldValue.arrayUnion(currUser.getCurrentOfferid()))
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(getApplicationContext(), "Offer Completed!", Toast.LENGTH_SHORT)
+                                    .show();
+                            DocumentReference usersRef = db.collection("users")
+                                    .document(getFirebaseUser().getUid());
+                            usersRef
+                                    .update("currentOfferid",0);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(), "Error Adding Offer", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    });
+
+          Timer timerObj = new Timer();
+          TimerTask timerTaskObj = new TimerTask() {
+              public void run() {
+                  Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                  intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                  startActivity(intent);
+              }
+          };
+          timerObj.schedule(timerTaskObj, 5000);
         });
   }
 
