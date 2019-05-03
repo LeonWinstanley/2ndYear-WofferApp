@@ -81,9 +81,9 @@ public class ProfileFragment extends Fragment {
                 });
 
         offerTitle.setText(getFirebaseUser().getDisplayName());
-        ImageView offerImg = ((ImageView) v
-                .findViewById(R.id.profileImage));
-        offerImg.setImageBitmap(getImageBitmap(getFirebaseUser().getPhotoUrl().toString()));
+        //ImageView offerImg = ((ImageView) v
+          //      .findViewById(R.id.profileImage));
+        //offerImg.setImageBitmap(getImageBitmap(getFirebaseUser().getPhotoUrl().toString()));
 
         return v;
 

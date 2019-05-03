@@ -8,29 +8,18 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.MenuItem;
 import android.Manifest;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.auth.User;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -122,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                     // Switch statement to replace the currently being viewed fragment with a new
                     // fragment dependant on which icon is pressed
                     switch (menuItem.getItemId()){
-                        case R.id.navigation_profile:
+                        case R.id.navigation_home:
                             selectedFragment = new ProfileFragment();
                             ((ProfileFragment) selectedFragment).setCurrentUser(currUser);
                             break;
