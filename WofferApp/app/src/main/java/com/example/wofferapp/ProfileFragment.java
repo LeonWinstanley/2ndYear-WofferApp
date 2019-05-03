@@ -55,12 +55,12 @@ public class ProfileFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        TextView offerTitle = ((TextView) v
-        .findViewById(R.id.profileText));
-        offerTitle.setText(currentUser.getId());
+        TextView currentOffer = ((TextView) v.findViewById(R.id.profileText));
 
-        TextView currentOffer = ((TextView) v
-                .findViewById(R.id.profileText));
+        TextView offerDescription = ((TextView) v.findViewById(R.id.profileCurrentOffer));
+
+        ImageView offerImg = ((ImageView) v.findViewById(R.id.image));
+
 
         db.collection("offers")
                 .whereEqualTo("id", currentUser.getCurrentOfferid())
@@ -73,6 +73,12 @@ public class ProfileFragment extends Fragment {
 
                                 OfferDetails offer = document.toObject(OfferDetails.class);
                                 currentOffer.setText(offer.getTitle());
+
+
+                                offerDescription.setText((offer.getDescription()));
+
+
+                                offerImg.setImageBitmap(getImageBitmap(offer.getImg()));
                             }
                         } else {
                             //Log.d(TAG, "Error getting documents: ", task.getException());
@@ -80,10 +86,7 @@ public class ProfileFragment extends Fragment {
                     }
                 });
 
-        offerTitle.setText(getFirebaseUser().getDisplayName());
-        //ImageView offerImg = ((ImageView) v
-          //      .findViewById(R.id.profileImage));
-        //offerImg.setImageBitmap(getImageBitmap(getFirebaseUser().getPhotoUrl().toString()));
+
 
         return v;
 
