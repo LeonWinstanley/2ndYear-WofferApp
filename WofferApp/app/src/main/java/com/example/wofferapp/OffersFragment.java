@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -43,6 +44,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Arrays;
@@ -167,7 +169,6 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
-            gotoAR();
             List<Location> locationList = locationResult.getLocations();
             if (locationList.size() > 0) {
                 //The last location in the list is the newest
@@ -230,29 +231,40 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
         startActivity(intent);
     }
 
+    public boolean isCompletedOffer(int offerID){
+        return currentUser.getCompletedOffers().contains(offerID);
+    }
+
     @Override
     public void onInfoWindowClick(Marker marker) {
         OfferDetails markerTag = (OfferDetails) marker.getTag();
-        currentUser.setCurrentOfferid(markerTag.getID());
         ((MainActivity)getActivity()).currUser = currentUser;
-        DocumentReference usersRef = db.collection("users")
-                .document(getFirebaseUser().getUid());
-        usersRef
-                .update("currentOfferid", markerTag.getID())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getContext(), "Offer Added!", Toast.LENGTH_SHORT)
-                                .show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getContext(), "Error Adding Offer", Toast.LENGTH_SHORT)
-                                .show();
-                    }
-                });
+
+        if(currentUser.getCompletedOffers() != null && !isCompletedOffer(markerTag.getID())) {
+            currentUser.setCurrentOfferid(markerTag.getID());
+            DocumentReference usersRef = db.collection("users")
+                    .document(getFirebaseUser().getUid());
+            usersRef
+                    .update("currentOfferid", markerTag.getID())
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(getContext(), "Offer Added!", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getContext(), "Error Adding Offer", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    });
+        }
+        else {
+            Toast.makeText(getContext(), "Offer Already Completed!", Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
 
     private GoogleMap.InfoWindowAdapter setMarkerWindow() {
