@@ -187,6 +187,24 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
                                                 location.getLatitude() > currentOffer.getPosition().getLatitude()-0.0001f &&
                                                 location.getLongitude() < currentOffer.getPosition().getLongitude()+0.0001f &&
                                                 location.getLatitude() > currentOffer.getPosition().getLatitude()-0.0001f){
+                                            DocumentReference usersRef = db.collection("users")
+                                                    .document(getFirebaseUser().getUid());
+                                            usersRef
+                                                    .update("completedOffers", FieldValue.arrayUnion(currentUser.getCurrentOfferid()))
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            DocumentReference usersRef = db.collection("users")
+                                                                    .document(getFirebaseUser().getUid());
+                                                            usersRef
+                                                                    .update("currentOfferid",0);
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                        }
+                                                    });
                                             gotoAR();
                                         }
                                     }
