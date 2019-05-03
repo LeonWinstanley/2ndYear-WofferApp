@@ -34,6 +34,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -42,7 +44,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowClickListener
         , OnMapReadyCallback {
@@ -73,6 +78,7 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        currentUser = ((MainActivity) getActivity()).currUser;
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
         View v = inflater.inflate(R.layout.fragment_offers, container, false);
         return v;
@@ -128,7 +134,6 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
         }
 
         db.collection("offers")
-                //.whereEqualTo("capital", true)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -139,9 +144,22 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
                                 double latitude = offer.getPosition().getLatitude();
                                 double longitude = offer.getPosition().getLongitude();
                                 LatLng location = new LatLng(latitude, longitude);
-                                Marker newMark = mMap.addMarker(new MarkerOptions()
-                                        .position(location));
-                                newMark.setTag(offer);
+                                if (currentUser.getCompletedOffers() != null) {
+                                    for (final int i : currentUser.getCompletedOffers()) {
+                                        if (i == offer.getID()) {
+                                            //
+                                        } else {
+                                            Marker newMark = mMap.addMarker(new MarkerOptions()
+                                                    .position(location));
+                                            newMark.setTag(offer);
+                                        }
+                                    }
+                                }
+                                else {
+                                    Marker newMark = mMap.addMarker(new MarkerOptions()
+                                            .position(location));
+                                    newMark.setTag(offer);
+                                }
                             }
                         } else {
                             //Log.d(TAG, "Error getting documents: ", task.getException());
@@ -178,7 +196,30 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
                                                 location.getLatitude() > currentOffer.getPosition().getLatitude()-0.0001f &&
                                                 location.getLongitude() < currentOffer.getPosition().getLongitude()+0.0001f &&
                                                 location.getLatitude() > currentOffer.getPosition().getLatitude()-0.0001f){
-                                            Toast.makeText(getContext(), "OFFER GOTTT", Toast.LENGTH_SHORT).show();
+                                            DocumentReference usersRef = db.collection("users")
+                                                    .document(getFirebaseUser().getUid());
+                                            usersRef
+                                                    .update("completedOffers",FieldValue.arrayUnion(currentOffer.getID()))
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Toast.makeText(getContext(), "Offer Completed!", Toast.LENGTH_SHORT)
+                                                                    .show();
+                                                            DocumentReference usersRef = db.collection("users")
+                                                                    .document(getFirebaseUser().getUid());
+                                                            usersRef
+                                                                    .update("currentOfferid",0);
+                                                            ((MainActivity) getActivity()).syncCurrentUser();
+                                                            //currentUser = ((MainActivity) getActivity()).currUser;
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Toast.makeText(getContext(), "Error Adding Offer", Toast.LENGTH_SHORT)
+                                                                    .show();
+                                                        }
+                                                    });
                                         }
                                     }
                                 } else {
@@ -224,12 +265,6 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
                 View myContentView = getLayoutInflater().inflate(
                         R.layout.info_marker, null);
                 OfferDetails markerTag = (OfferDetails) marker.getTag();
-                //TextView offerTitle = ((TextView) myContentView
-                        //.findViewById(R.id.title));
-                //offerTitle.setText(markerTag.getTitle());
-                //TextView offerDesc = ((TextView) myContentView
-                       //.findViewById(R.id.description));
-                //offerDesc.setText(markerTag.getDescription());
                 ImageView offerImg = ((ImageView) myContentView
                         .findViewById(R.id.image));
                 offerImg.setImageBitmap(getImageBitmap(markerTag.getImg()));

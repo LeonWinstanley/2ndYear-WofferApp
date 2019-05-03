@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     };
     public int colorThemeApp = 1;
     String currUserID = getFirebaseUser().getUid();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     List<Integer> compOff = new ArrayList<Integer>();
     public UserDetails currUser = new UserDetails(currUserID, 0 , compOff, colorThemeApp);
 
@@ -47,15 +48,30 @@ public class MainActivity extends AppCompatActivity {
         currUser = us;
     }
 
+    public void syncCurrentUser() {
+        DocumentReference docIdRef = db.collection("users").document(currUserID);
+        docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        currUser = document.toObject(UserDetails.class);
+                    }
+                } else {
+                    Log.d(TAG, "Failed with: ", task.getException());
+                }
+            }
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
         DocumentReference docIdRef = db.collection("users").document(currUserID);
-
         docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -112,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.navigation_offers:
                             selectedFragment = new OffersFragment();
-                            ((OffersFragment) selectedFragment).setCurrentUser(currUser);
+                            //((OffersFragment) selectedFragment).setCurrentUser(currUser);
                             break;
                         case R.id.navigation_settings:
                             selectedFragment = new SettingsFragment();
