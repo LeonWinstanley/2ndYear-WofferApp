@@ -144,7 +144,7 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
                                 double latitude = offer.getPosition().getLatitude();
                                 double longitude = offer.getPosition().getLongitude();
                                 LatLng location = new LatLng(latitude, longitude);
-                                if (currentUser.getCompletedOffers() != null) {
+                                if (((MainActivity) getActivity()).currUser.getCompletedOffers() != null) {
                                     for (final int i : currentUser.getCompletedOffers()) {
                                         if (i == offer.getID()) {
                                             //
