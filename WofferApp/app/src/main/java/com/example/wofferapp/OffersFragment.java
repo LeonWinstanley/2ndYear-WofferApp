@@ -1,5 +1,6 @@
 package com.example.wofferapp;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -140,26 +141,14 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
+
                                 OfferDetails offer = document.toObject(OfferDetails.class);
                                 double latitude = offer.getPosition().getLatitude();
                                 double longitude = offer.getPosition().getLongitude();
                                 LatLng location = new LatLng(latitude, longitude);
-                                if (((MainActivity) getActivity()).currUser.getCompletedOffers() != null) {
-                                    for (final int i : currentUser.getCompletedOffers()) {
-                                        if (i == offer.getID()) {
-                                            //
-                                        } else {
-                                            Marker newMark = mMap.addMarker(new MarkerOptions()
-                                                    .position(location));
-                                            newMark.setTag(offer);
-                                        }
-                                    }
-                                }
-                                else {
-                                    Marker newMark = mMap.addMarker(new MarkerOptions()
+                                Marker newMark = mMap.addMarker(new MarkerOptions()
                                             .position(location));
-                                    newMark.setTag(offer);
-                                }
+                                newMark.setTag(offer);
                             }
                         } else {
                             //Log.d(TAG, "Error getting documents: ", task.getException());
@@ -178,6 +167,7 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
     LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
+            gotoAR();
             List<Location> locationList = locationResult.getLocations();
             if (locationList.size() > 0) {
                 //The last location in the list is the newest
@@ -210,6 +200,7 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
                                                             usersRef
                                                                     .update("currentOfferid",0);
                                                             ((MainActivity) getActivity()).syncCurrentUser();
+                                                            gotoAR();
                                                             //currentUser = ((MainActivity) getActivity()).currUser;
                                                         }
                                                     })
@@ -232,6 +223,12 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
             }
         }
     };
+
+    private void gotoAR() {
+        Intent intent = new Intent(getContext(), SceneformActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
