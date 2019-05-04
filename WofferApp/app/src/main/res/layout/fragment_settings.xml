@@ -1,14 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/SettingsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20pt"
         android:layout_centerHorizontal="true"
         android:text="@string/title_settings"
         android:textSize="34sp" />
+
+
+    <TextView
+        android:id="@+id/ChangeColourText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100pt"
+        android:layout_centerHorizontal="true"
+        android:text="Change Colour"
+        android:textSize="34sp" />
+
+    <Button
+        android:id="@+id/DarkButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20pt"
+        android:layout_marginTop="140pt"
+        android:text="Dark"
+        android:backgroundTint="#585858"/>
+
+    <Button
+        android:id="@+id/LightButton"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20pt"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="140pt"
+        android:text="Light" />
+
+    <Button
+        android:id="@+id/SignOutButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30pt"
+        android:layout_marginLeft="20pt"
+        android:layout_marginRight="20pt"
+        android:text="Sign Out"/>
+
 
 </RelativeLayout>
