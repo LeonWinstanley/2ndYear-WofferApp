@@ -13,35 +13,21 @@
         android:text="@string/title_settings"
         android:textSize="34sp" />
 
+    <ImageView
+        android:id="@+id/ProfileImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="170dp"/>
 
     <TextView
-        android:id="@+id/ChangeColourText"
+        android:id="@+id/ProfileName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100pt"
+        android:layout_marginTop="160pt"
         android:layout_centerHorizontal="true"
-        android:text="Change Colour"
         android:textSize="34sp" />
 
-    <Button
-        android:id="@+id/DarkButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20pt"
-        android:layout_marginTop="140pt"
-        android:text="Dark"
-        android:backgroundTint="#585858"/>
-
-    <Button
-        android:id="@+id/LightButton"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20pt"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="140pt"
-        android:text="Light"
-        android:backgroundTint="#585858"/>
 
     <Button
         android:id="@+id/SignOutButton"

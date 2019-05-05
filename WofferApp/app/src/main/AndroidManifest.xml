@@ -22,7 +22,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/LightMaterialTheme">
+        android:theme="@style/LightTheme">
         <meta-data android:name="com.google.ar.core" android:value="required" />
         <activity android:name=".MainActivity"></activity>
         <!--
@@ -55,7 +55,7 @@
             android:name=".SceneformActivity"
             android:label="@string/app_name"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:theme="@style/LightTheme"
             android:screenOrientation="locked"
             android:exported="true">
         </activity>
