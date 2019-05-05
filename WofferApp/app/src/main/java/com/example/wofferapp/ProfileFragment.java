@@ -59,7 +59,11 @@ public class ProfileFragment extends Fragment {
 
         TextView offerDescription = ((TextView) v.findViewById(R.id.profileCurrentOffer));
 
+        TextView offerCode = ((TextView) v.findViewById(R.id.profileReward));
+
         ImageView offerImg = ((ImageView) v.findViewById(R.id.image));
+
+
 
 
         db.collection("offers")
@@ -77,8 +81,12 @@ public class ProfileFragment extends Fragment {
 
                                 offerDescription.setText((offer.getDescription()));
 
+                                offerCode.setText((offer.getReward()));
+
 
                                 offerImg.setImageBitmap(getImageBitmap(offer.getImg()));
+
+
                             }
                         } else {
                             //Log.d(TAG, "Error getting documents: ", task.getException());
