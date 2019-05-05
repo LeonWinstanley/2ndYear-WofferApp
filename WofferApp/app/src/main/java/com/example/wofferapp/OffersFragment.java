@@ -10,6 +10,7 @@ import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +86,21 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        currentUser = ((MainActivity) getActivity()).currUser;
+
+        DocumentReference docIdRef = db.collection("users").document(getFirebaseUser().getUid());
+        docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        currentUser = document.toObject(UserDetails.class);
+                    }
+                } else {
+                    //
+                }
+            }
+        });
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
         View v = inflater.inflate(R.layout.fragment_offers, container, false);
