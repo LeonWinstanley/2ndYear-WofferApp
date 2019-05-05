@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -65,7 +66,7 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
     LocationRequest mLocationRequest;
     Location mLastLocation;
     FusedLocationProviderClient mFusedLocationClient;
-
+    private InterstitialAd mInterstitialAd;
 
     public OffersFragment() {
         // Empty Constructor
@@ -88,6 +89,20 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
         View v = inflater.inflate(R.layout.fragment_offers, container, false);
+
+        mInterstitialAd = new InterstitialAd(getContext());
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("EE832C6ECE140E484953C2CE1AE0336C").build());
+        mInterstitialAd.setAdListener(new AdListener() {
+           @Override
+           public void onAdLoaded(){
+               super.onAdLoaded();
+               if(mInterstitialAd.isLoaded()){
+                   mInterstitialAd.show();
+               }
+           }
+        });
+
         return v;
 
 

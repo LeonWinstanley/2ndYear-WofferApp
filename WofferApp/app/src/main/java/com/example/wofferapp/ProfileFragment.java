@@ -38,10 +38,6 @@ public class ProfileFragment extends Fragment {
 
     public UserDetails currentUser = new UserDetails();
 
-
-
-
-
     public void setCurrentUser(UserDetails us){
         currentUser = us;
     }
@@ -49,10 +45,6 @@ public class ProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-
-
-
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
         setCurrentUser(((MainActivity) getActivity()).currUser);
@@ -75,11 +67,6 @@ public class ProfileFragment extends Fragment {
         TextView offerCode3 = ((TextView) v.findViewById(R.id.profileReward3));
 
         ImageView offerImg = ((ImageView) v.findViewById(R.id.image));
-
-
-
-
-
 
         db.collection("offers")
                 .whereEqualTo("id", currentUser.getCurrentOfferid())
