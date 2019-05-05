@@ -46,8 +46,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        currentUser = ((MainActivity) getActivity()).currUser;
-
     FirebaseFirestore db = FirebaseFirestore.getInstance();
         setCurrentUser(((MainActivity) getActivity()).currUser);
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
@@ -71,7 +69,7 @@ public class ProfileFragment extends Fragment {
         ImageView offerImg = ((ImageView) v.findViewById(R.id.image));
 
         db.collection("offers")
-                .whereEqualTo("id", ((MainActivity) getActivity()).currUser.getCurrentOfferid())
+                .whereEqualTo("id", currentUser.getCurrentOfferid())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -81,12 +79,21 @@ public class ProfileFragment extends Fragment {
 
                                 OfferDetails offer = document.toObject(OfferDetails.class);
                                 currentOffer.setText(offer.getTitle());
+
+
                                 offerDescription.setText((offer.getDescription()));
+
+
                                 //offerCode1.setText();
                                 //offerCode2.setText();
                                 //offerCode3.setText();
                                 // needs to search through user completed array then show offer ID
+
+
+
                                 offerImg.setImageBitmap(getImageBitmap(offer.getImg()));
+
+
                             }
                         }
                     }
@@ -109,7 +116,7 @@ public class ProfileFragment extends Fragment {
 
                                         OfferDetails offer = document.toObject(OfferDetails.class);
 
-                                        offerCode1.setText(offer.getReward());
+                                        offerCode1.setText(offer.getTitle() + " : " + offer.getReward());
 
                         }}}});
             }
@@ -126,7 +133,7 @@ public class ProfileFragment extends Fragment {
 
                                         OfferDetails offer = document.toObject(OfferDetails.class);
 
-                                        offerCode2.setText(offer.getReward());
+                                        offerCode2.setText(offer.getTitle() + " : " + offer.getReward());
 
                                     }}}});
             }
@@ -143,7 +150,7 @@ public class ProfileFragment extends Fragment {
 
                                         OfferDetails offer = document.toObject(OfferDetails.class);
 
-                                        offerCode3.setText(offer.getReward());
+                                        offerCode3.setText(offer.getTitle() + " : " + offer.getReward());
 
                                     }}}});
             }
@@ -153,8 +160,15 @@ public class ProfileFragment extends Fragment {
             }
 
         }
+
+
+
         return v;
+
     }
+
+
+
 
     public FirebaseUser getFirebaseUser() {
         return FirebaseAuth.getInstance().getCurrentUser();
