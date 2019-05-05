@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         // Initialize the bottom navigation bar
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        //navView.setSelectedItemId(R.id.navigation_offers);
+        navView.setSelectedItemId(R.id.navigation_offers);
 
         // Using RxPermissions library create a new object
         RxPermissions rxPermissions = new RxPermissions(this);
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Here we set up the application by initializing the fragment to be a profile fragment
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                new ProfileFragment()).commit();
+                new OffersFragment()).commit();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener =

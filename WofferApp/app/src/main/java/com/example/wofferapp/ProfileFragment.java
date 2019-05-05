@@ -46,6 +46,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        currentUser = ((MainActivity) getActivity()).currUser;
+
     FirebaseFirestore db = FirebaseFirestore.getInstance();
         setCurrentUser(((MainActivity) getActivity()).currUser);
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
@@ -69,7 +71,7 @@ public class ProfileFragment extends Fragment {
         ImageView offerImg = ((ImageView) v.findViewById(R.id.image));
 
         db.collection("offers")
-                .whereEqualTo("id", currentUser.getCurrentOfferid())
+                .whereEqualTo("id", ((MainActivity) getActivity()).currUser.getCurrentOfferid())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -79,21 +81,12 @@ public class ProfileFragment extends Fragment {
 
                                 OfferDetails offer = document.toObject(OfferDetails.class);
                                 currentOffer.setText(offer.getTitle());
-
-
                                 offerDescription.setText((offer.getDescription()));
-
-
                                 //offerCode1.setText();
                                 //offerCode2.setText();
                                 //offerCode3.setText();
                                 // needs to search through user completed array then show offer ID
-
-
-
                                 offerImg.setImageBitmap(getImageBitmap(offer.getImg()));
-
-
                             }
                         }
                     }
@@ -160,15 +153,8 @@ public class ProfileFragment extends Fragment {
             }
 
         }
-
-
-
         return v;
-
     }
-
-
-
 
     public FirebaseUser getFirebaseUser() {
         return FirebaseAuth.getInstance().getCurrentUser();
