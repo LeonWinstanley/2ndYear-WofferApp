@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -51,6 +52,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.google.android.gms.ads.InterstitialAd;
 
 public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowClickListener
         , OnMapReadyCallback {
@@ -63,6 +65,7 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
     LocationRequest mLocationRequest;
     Location mLastLocation;
     FusedLocationProviderClient mFusedLocationClient;
+
 
     public OffersFragment() {
         // Empty Constructor
@@ -82,9 +85,12 @@ public class OffersFragment extends Fragment implements GoogleMap.OnInfoWindowCl
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         currentUser = ((MainActivity) getActivity()).currUser;
+
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
         View v = inflater.inflate(R.layout.fragment_offers, container, false);
         return v;
+
+
     }
 
     @Override

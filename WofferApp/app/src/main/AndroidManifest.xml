@@ -24,6 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/LightTheme">
         <meta-data android:name="com.google.ar.core" android:value="required" />
+        <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-3940256099942544~3347511713"/>
         <activity android:name=".MainActivity"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

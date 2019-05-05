@@ -14,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,6 +37,7 @@ import java.net.URLConnection;
 public class ProfileFragment extends Fragment {
 
     public UserDetails currentUser = new UserDetails();
+    private InterstitialAd mInterstitialAd;
 
     public void setCurrentUser(UserDetails us){
         currentUser = us;
@@ -63,9 +67,6 @@ public class ProfileFragment extends Fragment {
 
         ImageView offerImg = ((ImageView) v.findViewById(R.id.image));
 
-
-
-
         db.collection("offers")
                 .whereEqualTo("id", currentUser.getCurrentOfferid())
                 .get()
@@ -94,7 +95,18 @@ public class ProfileFragment extends Fragment {
                     }
                 });
 
-
+        mInterstitialAd = new InterstitialAd(getContext());
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("EE832C6ECE140E484953C2CE1AE0336C").build());
+        mInterstitialAd.setAdListener(new AdListener() {
+           @Override
+           public void onAdLoaded(){
+               super.onAdLoaded();
+               if (mInterstitialAd.isLoaded()){
+                   mInterstitialAd.show();
+               }
+           }
+        });
 
         return v;
 
