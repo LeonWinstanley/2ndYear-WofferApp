@@ -7,6 +7,8 @@ import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,11 +32,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.List;
 
 public class ProfileFragment extends Fragment {
 
     public UserDetails currentUser = new UserDetails();
-    private InterstitialAd mInterstitialAd;
+
+
+
+
 
     public void setCurrentUser(UserDetails us){
         currentUser = us;
@@ -47,7 +50,11 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
         setCurrentUser(((MainActivity) getActivity()).currUser);
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT > 8)
@@ -63,9 +70,16 @@ public class ProfileFragment extends Fragment {
 
         TextView offerDescription = ((TextView) v.findViewById(R.id.profileCurrentOffer));
 
-        TextView offerCode = ((TextView) v.findViewById(R.id.profileReward));
+        TextView offerCode1 = ((TextView) v.findViewById(R.id.profileReward1));
+        TextView offerCode2 = ((TextView) v.findViewById(R.id.profileReward2));
+        TextView offerCode3 = ((TextView) v.findViewById(R.id.profileReward3));
 
         ImageView offerImg = ((ImageView) v.findViewById(R.id.image));
+
+
+
+
+
 
         db.collection("offers")
                 .whereEqualTo("id", currentUser.getCurrentOfferid())
@@ -82,35 +96,92 @@ public class ProfileFragment extends Fragment {
 
                                 offerDescription.setText((offer.getDescription()));
 
-                                offerCode.setText((offer.getReward()));
+
+                                //offerCode1.setText();
+                                //offerCode2.setText();
+                                //offerCode3.setText();
+                                // needs to search through user completed array then show offer ID
+
 
 
                                 offerImg.setImageBitmap(getImageBitmap(offer.getImg()));
 
 
                             }
-                        } else {
-                            //Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
 
-        mInterstitialAd = new InterstitialAd(getContext());
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-        mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("EE832C6ECE140E484953C2CE1AE0336C").build());
-        mInterstitialAd.setAdListener(new AdListener() {
-           @Override
-           public void onAdLoaded(){
-               super.onAdLoaded();
-               if (mInterstitialAd.isLoaded()){
-                   mInterstitialAd.show();
-               }
-           }
-        });
+        List<Integer> compOffers = currentUser.getCompletedOffers();
+        for(int i = 0; i < compOffers.size(); i++)
+        {
+            Integer offID = compOffers.get(i);
+            if(i == 0)
+            {
+                db.collection("offers")
+                        .whereEqualTo("id", offID)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                        OfferDetails offer = document.toObject(OfferDetails.class);
+
+                                        offerCode1.setText(offer.getReward());
+
+                        }}}});
+            }
+            else if (i == 1)
+            {
+                db.collection("offers")
+                        .whereEqualTo("id", offID)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                        OfferDetails offer = document.toObject(OfferDetails.class);
+
+                                        offerCode2.setText(offer.getReward());
+
+                                    }}}});
+            }
+            else if(i == 2)
+            {
+                db.collection("offers")
+                        .whereEqualTo("id", offID)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                        OfferDetails offer = document.toObject(OfferDetails.class);
+
+                                        offerCode3.setText(offer.getReward());
+
+                                    }}}});
+            }
+            else
+            {
+                break;
+            }
+
+        }
+
+
 
         return v;
 
     }
+
+
+
 
     public FirebaseUser getFirebaseUser() {
         return FirebaseAuth.getInstance().getCurrentUser();
@@ -134,3 +205,6 @@ public class ProfileFragment extends Fragment {
     }
 
 }
+
+
+

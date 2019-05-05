@@ -10,25 +10,36 @@
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:orientation="vertical">
-
+        <TextView
+            android:id="@+id/CurrentOfferTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:layout_marginHorizontal="50dp"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:background="@layout/radius"
+            android:text="Selected Offer"/>
 
         <ImageView
             android:id="@+id/image"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:layout_marginTop="50dp"/>
+            android:layout_marginTop="30dp"/>
+
 
         <TextView
             android:id="@+id/profileText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:layout_marginHorizontal="50dp"
-            android:background="@layout/radius"
+
             android:gravity="center"
-            android:textSize="30sp" />
+            android:textSize="25sp" />
 
 
         <TextView
@@ -37,19 +48,57 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
+
             android:layout_marginHorizontal="50dp"
-            android:background="@layout/radius"
+
             android:gravity="center"
-            android:textSize="30sp" />
+            android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/profileReward"
+            android:id="@+id/title1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:layout_marginHorizontal="50dp"
-            android:background="@layout/radius"
             android:gravity="center"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:background="@layout/radius"
+            android:text="Completed Offers"/>
+
+        <TextView
+            android:id="@+id/profileReward1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="50dp"
+
+            android:gravity="center"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/profileReward2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="50dp"
+
+            android:gravity="center"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/profileReward3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="50dp"
+
+            android:gravity="center"
+            android:textSize="20sp" />
+
+
+
+
+
 </LinearLayout>
