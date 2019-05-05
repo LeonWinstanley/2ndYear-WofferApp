@@ -1,5 +1,6 @@
 package com.example.wofferapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.Manifest;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -129,6 +131,12 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             };
+
+    public void goToLogin (View view){
+        Intent intent = new Intent (this, LoginActivity.class);
+        FirebaseAuth.getInstance().signOut();
+        startActivity(intent);
+    }
 }
 
 
