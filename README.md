@@ -7,4 +7,8 @@ Requires Android SDK 28 and atleast Android 7.1
 
 [Download on the Google Play Store](https://play.google.com/store/apps/details?id=com.mahew.wofferapp)
 
+## Privacy
+
+[Privacy Policy](http://mahew.uk/woffer/privacy.html)
+
 ### Code base developed by Mahew and Leon Winstanley
